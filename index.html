@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>PKRS - Rumah Sakit Lanud Dhomber</title>
+
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+        <style>
+            :root {
+                --bg: #f4f8fc;
+                --card: #ffffff;
+                --primary: #0b6ef6; /* blue */
+                --primary-600: #0a58d8;
+                --muted: #6b7280;
+                --glass: rgba(255, 255, 255, 0.6);
+                --radius: 14px;
+                --shadow: 0 8px 30px rgba(11, 110, 246, 0.08);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                height: 100%;
+            }
+            body {
+                margin: 0;
+                font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+                background: linear-gradient(180deg, #f6fbff 0%, var(--bg) 50%);
+                color: #0f172a;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                padding: 20px 24px;
+            }
+
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            /* Header */
+            .header {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .brand {
+                background: linear-gradient(135deg, rgba(11, 110, 246, 0.12), rgba(3, 105, 161, 0.06));
+                border-radius: 12px;
+                padding: 18px 22px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                box-shadow: var(--shadow);
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0; /* biar ga mengecil waktu layar sempit */
+                overflow: hidden;
+            }
+
+            .logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .title {
+                line-height: 1.05;
+            }
+
+            .title h1 {
+                margin: 0;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--primary-600);
+            }
+
+            .title p {
+                margin: 0;
+                font-size: 13px;
+                color: var(--muted);
+                margin-top: 6px;
+            }
+
+            /* Grid for videos */
+            .videos {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 18px;
+                margin-top: 8px;
+            }
+
+            .card {
+                background: var(--card);
+                border-radius: var(--radius);
+                overflow: hidden;
+                box-shadow: var(--shadow);
+                border: 1px solid rgba(10, 20, 50, 0.03);
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 18px 40px rgba(11, 110, 246, 0.12);
+            }
+
+            .video-wrap {
+                position: relative;
+                width: 100%;
+                padding-top: 56.25%; /* 16:9 */
+                background: linear-gradient(180deg, #eff7ff, #fbfdff);
+            }
+
+            .video-wrap iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 0;
+            }
+
+            .card-body {
+                padding: 14px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            .meta {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .meta .vtitle {
+                font-weight: 600;
+                font-size: 14px;
+                color: #08132a;
+            }
+
+            /* small footer */
+            .foot {
+                margin-top: 20px;
+                margin-bottom: 50px;
+                text-align: center;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            /* Responsive tweaks */
+            @media (max-width: 600px) {
+                .header {
+                    flex-direction: column; /* logo di atas, teks di bawah */
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .brand {
+                    flex-direction: column;
+                    gap: 12px;
+                    padding: 16px;
+                }
+
+                .logo {
+                    width: 120px; /* agak dibesarin di HP */
+                    height: 120px;
+                }
+
+                .title h1 {
+                    font-size: 20px;
+                }
+
+                .title p {
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="brand" aria-hidden="true">
+                    <div class="logo"><img src="logo.png" alt="Logo" /></div>
+                    <div class="title">
+                        <!-- The user wanted a line break inside the title -->
+                        <h1>
+                            PKRS <br />
+                            Rumah Sakit Lanud Dhomber
+                        </h1>
+                        <p>Channel video edukasi &amp; informasi rumah sakit</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video list; managed by JS array for easy editing -->
+            <div id="videos" class="videos" aria-live="polite"></div>
+
+            <div class="foot">Made with care • Hospital of Lanud Dhomber</div>
+            <br />
+        </div>
+
+        <script>
+            /*Tambahkan atau ubah daftar video di bawah ini.Gunakan ID YouTube (contoh: "dQw4w9WgXcQ").*/
+            const videoList = [
+                { id: "kHY8paJcJo4", title: "Faktor Risiko Hipertensi dan Cara Mencegahnya" },
+                { id: "Jg8S09oHmpE", title: "6 Langkah Cuci Tangan" },
+                { id: "2xdVIW9VAL8", title: "ILM PTM Ayo Cegah Diabetes Mellitus 60 detik" },
+                { id: "pd2iEPb_msc", title: "ASAM LAMBUNG NAIK? JANGAN PANIK! INI SOLUSINYA" },
+                { id: "4fV1h1PkqMQ", title: "PERTOLONGAN PERTAMA PADA KECELAKAAN" },
+            ]
+
+            const container = document.getElementById("videos")
+
+            function createCard(v) {
+                const div = document.createElement("div")
+                div.className = "card"
+
+                const wrap = document.createElement("div")
+                wrap.className = "video-wrap"
+
+                const iframe = document.createElement("iframe")
+                iframe.src = `https://www.youtube.com/embed/${v.id}`
+                iframe.title = v.title
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                iframe.allowFullscreen = true
+                iframe.loading = "lazy"
+
+                wrap.appendChild(iframe)
+
+                const body = document.createElement("div")
+                body.className = "card-body"
+
+                const meta = document.createElement("div")
+                meta.className = "meta"
+
+                const t = document.createElement("div")
+                t.className = "vtitle"
+                t.textContent = v.title
+
+                meta.appendChild(t)
+
+                body.appendChild(meta)
+
+                div.appendChild(wrap)
+                div.appendChild(body)
+
+                return div
+            }
+
+            // render
+            videoList.forEach((v) => container.appendChild(createCard(v)))
+        </script>
+    </body>
+</html>
